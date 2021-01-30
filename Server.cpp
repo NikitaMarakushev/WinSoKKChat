@@ -5,7 +5,6 @@
 
 #pragma warning(disable: 4996)
 
-//Склад сокетов
 SOCKET Connections[100];
 int counter = 0;
 
@@ -37,13 +36,13 @@ bool ProcessPacket(int index, Packet packettype) {
 		break;
 	}
 	default:
-		std::cout << "Незнакомый паект: " << packettype << std::endl;
+		std::cout << "ГЌГҐГ§Г­Г ГЄГ®Г¬Г»Г© ГЇГ ГҐГЄГІ: " << packettype << std::endl;
 		break;
 	}
 	return true;
 }
 
-//Принимает индекс соединения в сокет0массиве
+
 void ClientHandler(int index)
 {
 	Packet packettype;
@@ -60,6 +59,7 @@ int main()
 {
 	
 	WSAData wsadata;
+	
 	WORD DllVersion = MAKEWORD(2, 1);
 	if (WSAStartup(DllVersion, &wsadata) != 0) {
 		std::cout << "Error!!! \n" << std::endl;
@@ -67,7 +67,7 @@ int main()
 	}
 
 	SOCKADDR_IN addr;
-	//Размер структуры 
+
 	int addrSize = sizeof(addr);
 
 	addr.sin_addr.s_addr = inet_addr("127.0.0.1");
@@ -75,11 +75,11 @@ int main()
 	addr.sin_family = AF_INET;
 	 
 	SOCKET sListen = socket(AF_INET, SOCK_STREAM, NULL);
-	//Привязка адреса сокету
+
 	bind(sListen, (SOCKADDR*)&addr, sizeof(addr));
 	listen(sListen, SOMAXCONN);
 
-	//Новый сокет
+
 	SOCKET nConnect;
 
 	for (int i = 0; i < 100; i++)
@@ -98,13 +98,12 @@ int main()
 			send(nConnect, (char*)&msgSize , sizeof(int), NULL);
 			send(nConnect, msg.c_str() , msgSize, NULL);
 
-			//Записываем соединение в массив
 			Connections[i] = nConnect;
 			counter++;
-			//Создаем поток, в котором будет выполняться функция
+
 			CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)ClientHandler, (LPVOID)(i), NULL, NULL);
 		
-			//Отправляем тестовый пакет клиенту
+
 			Packet testpacket = P_Test;
 			send(nConnect, (char*)&testpacket, sizeof(Packet), NULL);
 		}

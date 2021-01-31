@@ -12,7 +12,6 @@ enum Packet {
 	P_Test
 };
 
-//Обработка приходящих пакетов
 bool ProcessPacket(Packet packettype) {
 	switch (packettype) {
 	case P_ChatMessage:
@@ -27,16 +26,15 @@ bool ProcessPacket(Packet packettype) {
 		break;
 	}
 	case P_Test:
-		std::cout << "Тестовый пакет для проверки соединения" << std::endl;
+		std::cout << "Г’ГҐГ±ГІГ®ГўГ»Г© ГЇГ ГЄГҐГІ Г¤Г«Гї ГЇГ°Г®ГўГҐГ°ГЄГЁ Г±Г®ГҐГ¤ГЁГ­ГҐГ­ГЁГї" << std::endl;
 		break;
 	default:
-		std::cout << "Незнакомый пакет: " << packettype << std::endl;
+		std::cout << "ГЌГҐГ§Г­Г ГЄГ®Г¬Г»Г© ГЇГ ГЄГҐГІ: " << packettype << std::endl;
 		break;
 	}
 	return true;
 }
 
-//Принятие отправленного сервером сообщения
 void ClientHandler() {
 	Packet packettype;
 	while (true) {
@@ -48,6 +46,7 @@ void ClientHandler() {
 	}
 	closesocket(Connection);
 }
+
 int main()
 {
 	WSAData wsadata;
@@ -59,13 +58,12 @@ int main()
 
 
 	SOCKADDR_IN addr;
-	//Размер структуры 
+
 	int addrSize = sizeof(addr);
 	addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 	addr.sin_port = htons(1111);
 	addr.sin_family = AF_INET;
 
-	//Сокет соединением с сервером
 	Connection = socket(AF_INET, SOCK_STREAM, NULL);
 	if (connect(Connection, (SOCKADDR*)&addr, sizeof(addr)) != 0)
 	{
@@ -77,7 +75,6 @@ int main()
 	CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)ClientHandler, NULL, NULL, NULL);
 
 
-	//Считывание вводимых пользователем символов
 	std::string msg1;
 	while (true) {
 		std::getline(std::cin, msg1);
